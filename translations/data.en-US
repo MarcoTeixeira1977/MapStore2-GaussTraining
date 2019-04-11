@@ -1,0 +1,9 @@
+{
+    "locale": "en-US",
+    "messages": {
+        "home": {
+            "footerDescription": "Gauss Company",
+            "shortDescription": "My <b>HTML</b> description"
+        }
+    }
+}
