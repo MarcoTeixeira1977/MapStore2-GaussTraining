@@ -6,15 +6,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+// const assign = require('object-assign');
+
 const ConfigUtils = require('../MapStore2/web/client/utils/ConfigUtils');
 /**
  * Add custom (overriding) translations with:
  *
  * ConfigUtils.setConfigProp('translationsPath', ['./MapStore2/web/client/translations', './translations']);
  */
-ConfigUtils.setConfigProp("translationsPath", [
-    "./MapStore2/web/client/translations"
-]);
+ConfigUtils.setConfigProp('translationsPath', ['./MapStore2/web/client/translations', './translations']);
+
 ConfigUtils.setConfigProp('themePrefix', 'GaussTraining');
 
 /**
@@ -22,7 +23,7 @@ ConfigUtils.setConfigProp('themePrefix', 'GaussTraining');
  *
  * ConfigUtils.setLocalConfigurationFile('localConfig.json');
  */
-ConfigUtils.setLocalConfigurationFile('localConfig.json');
+ConfigUtils.setLocalConfigurationFile('./localConfig.json');
 
 /**
  * Use a custom application configuration file with:
@@ -47,5 +48,14 @@ const appConfig = require('../MapStore2/web/client/product/appConfig');
  * const plugins = require('./plugins');
  */
 const pluginsDef = require('../MapStore2/web/client/product/plugins');
-
 require('../MapStore2/web/client/product/main')(appConfig, pluginsDef);
+const {plugins, ...other} = pluginsDef;
+
+require('../MapStore2/web/client/product/main')(appConfig, {
+    plugins: {
+        ...plugins,
+        GaussPlugin: require('./plugins/Gauss')
+    },
+    ...other
+});
+

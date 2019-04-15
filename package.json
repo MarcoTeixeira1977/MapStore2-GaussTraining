@@ -210,7 +210,7 @@
         "clean": "rimraf dist",
         "compile": "npm run clean && mkdirp ./dist && webpack --config prod-webpack.config.js",
         "start": "webpack-dev-server --progress --colors --port 8081 --hot --inline --content-base .",
-        "postinstall": "node checkCesium.js",
+        "postinstall": "node checkCesium.js && rimraf node_modules/leaflet-simple-graticule/node_modules && rimraf node_modules/react-pdf/node_modules",
         "test": "karma start ./karma.conf.single-run.js",
         "continuoustest": "karma start ./karma.conf.continuous-test.js",
         "mvntest": "karma start ./karma.conf.single-run.js --reporters junit,dots,coverage",

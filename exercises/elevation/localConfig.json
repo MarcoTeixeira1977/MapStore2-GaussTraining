@@ -6,7 +6,8 @@
       "https://demo.geo-solutions.it:443/geoserver",
       "https://demo.geo-solutions.it/geoserver",
       "https://nominatim.openstreetmap.org",
-      "http://cloudsdi.geo-solutions.it"
+      "http://cloudsdi.geo-solutions.it",
+      "http://localhost:8090/geoserver"
     ]
   },
   "geoStoreUrl": "rest/geostore/",
@@ -247,6 +248,18 @@
       {
         "name": "Map",
         "cfg": {
+          "additionalLayers": [
+            {
+              "type": "wms",
+              "url": "http://localhost:8090/geoserver/wms",
+              "title": "Elevation",
+              "name": "sf:srtm",
+              "format": "application/bil16",
+              "nodata": -9999,
+              "visibility": true,
+              "useForElevation": true
+            }
+          ],
           "mapOptions": {
             "openlayers": {
               "interactions": {
@@ -386,7 +399,8 @@
             "EPSG:4326",
             "EPSG:3857"
           ],
-          "additionalCRS": {}
+          "additionalCRS": {},
+          "showElevation": true
         }
       },
       {

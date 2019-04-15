@@ -6,6 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+const assign = require('object-assign');
+
 const ConfigUtils = require('../MapStore2/web/client/utils/ConfigUtils');
 /**
  * Add custom (overriding) translations with:
@@ -15,6 +17,7 @@ const ConfigUtils = require('../MapStore2/web/client/utils/ConfigUtils');
 ConfigUtils.setConfigProp("translationsPath", [
     "./MapStore2/web/client/translations"
 ]);
+
 ConfigUtils.setConfigProp('themePrefix', 'GaussTraining');
 
 /**
@@ -22,7 +25,7 @@ ConfigUtils.setConfigProp('themePrefix', 'GaussTraining');
  *
  * ConfigUtils.setLocalConfigurationFile('localConfig.json');
  */
-ConfigUtils.setLocalConfigurationFile('localConfig.json');
+ConfigUtils.setLocalConfigurationFile('./localConfig.json');
 
 /**
  * Use a custom application configuration file with:
@@ -47,5 +50,25 @@ const appConfig = require('../MapStore2/web/client/product/appConfig');
  * const plugins = require('./plugins');
  */
 const pluginsDef = require('../MapStore2/web/client/product/plugins');
-
 require('../MapStore2/web/client/product/main')(appConfig, pluginsDef);
+const {plugins, ...other} = pluginsDef;
+
+require('../MapStore2/web/client/product/main')(appConfig, {
+    plugins: {
+        ...plugins,
+        PrintPlugin: require('./plugins/Print')
+    },
+    ...other
+});
+
+const PrintUtils = require('../MapStore2/web/client/utils/PrintUtils');
+const SecurityUtils = require('../MapStore2/web/client/utils/SecurityUtils');
+
+const printSpecFun = PrintUtils.getMapfishPrintSpecification;
+PrintUtils.getMapfishPrintSpecification = (spec) => {
+    const securityInfo = SecurityUtils.getSecurityInfo();
+    return assign(printSpecFun(spec), {
+        user: securityInfo.user && securityInfo.user.name || 'anonymous',
+        extra: spec.extra || ''
+    });
+};
